@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>فنادق سوهاج — دليلك على ضفاف النيل</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --night: #0f2422;
+    --night-deep: #0a1a18;
+    --sand: #e8dcbf;
+    --sand-dim: #cdbf9a;
+    --gold: #c9a227;
+    --gold-bright: #e6c34d;
+    --teal-line: #2f6e63;
+    --card: #f3ead2;
+    --ink: #1c2420;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background: var(--night);
+    color: var(--sand);
+    font-family: 'Tajawal', sans-serif;
+    overflow-x: hidden;
+  }
+  .river-wrap{
+    position: fixed;
+    top:0; right:0; bottom:0; left:0;
+    z-index:0;
+    pointer-events:none;
+    opacity:0.55;
+  }
+  header{
+    position: relative;
+    z-index: 1;
+    padding: 6rem 1.5rem 4rem;
+    text-align:center;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .eyebrow{
+    font-size: 0.9rem;
+    letter-spacing: 0.15em;
+    color: var(--gold-bright);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    font-weight: 500;
+  }
+  h1{
+    font-family:'Aref Ruqaa', serif;
+    font-size: clamp(2.8rem, 8vw, 5rem);
+    font-weight: 700;
+    color: var(--sand);
+    line-height: 1.2;
+    margin-bottom: 1rem;
+    text-shadow: 0 0 40px rgba(201,162,39,0.25);
+  }
+  h1 span{ color: var(--gold-bright); }
+  .lede{
+    font-size: 1.15rem;
+    color: var(--sand-dim);
+    line-height: 2;
+    max-width: 620px;
+    margin: 0 auto 2.5rem;
+  }
+  .stat-row{
+    display:flex;
+    justify-content:center;
+    gap: 2.5rem;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+  }
+  .stat{ text-align:center; }
+  .stat b{
+    display:block;
+    font-family:'Aref Ruqaa', serif;
+    font-size: 2rem;
+    color: var(--gold-bright);
+  }
+  .stat span{ font-size: 0.85rem; color: var(--sand-dim); }
+
+  .controls{
+    position: relative;
+    z-index: 1;
+    max-width: 1100px;
+    margin: 0 auto 2rem;
+    padding: 0 1.5rem;
+    display:flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    justify-content:center;
+  }
+  .chip{
+    background: transparent;
+    border: 1px solid var(--teal-line);
+    color: var(--sand-dim);
+    padding: 0.55rem 1.3rem;
+    border-radius: 999px;
+    font-family:'Tajawal';
+    font-size: 0.95rem;
+    cursor:pointer;
+    transition: all 0.25s ease;
+  }
+  .chip:hover{ border-color: var(--gold); color: var(--gold-bright); }
+  .chip.active{
+    background: var(--gold);
+    border-color: var(--gold);
+    color: var(--night-deep);
+    font-weight: 700;
+  }
+
+  main{
+    position: relative;
+    z-index: 1;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 1rem 1.5rem 4rem;
+  }
+  .river-line{
+    position:absolute;
+    right: 50%;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: linear-gradient(to bottom, transparent, var(--teal-line) 5%, var(--teal-line) 95%, transparent);
+    opacity: 0.4;
+  }
+  .section-title{
+    font-family:'Aref Ruqaa', serif;
+    font-size: 1.8rem;
+    color: var(--gold-bright);
+    text-align:center;
+    margin: 3rem 0 0.5rem;
+  }
+  .section-sub{
+    text-align:center;
+    color: var(--sand-dim);
+    font-size: 0.95rem;
+    margin-bottom: 2rem;
+  }
+
+  .grid{
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+  .card{
+    background: var(--card);
+    color: var(--ink);
+    border-radius: 18px;
+    padding: 1.6rem;
+    position:relative;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.35);
+    border: 1px solid rgba(0,0,0,0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display:flex;
+    flex-direction:column;
+    gap: 0.7rem;
+  }
+  .card:hover{ transform: translateY(-6px); box-shadow: 0 26px 50px rgba(0,0,0,0.45); }
+  .card::before{
+    content: attr(data-idx);
+    position:absolute;
+    top: -14px;
+    right: 1.4rem;
+    background: var(--gold);
+    color: var(--night-deep);
+    width: 34px; height:34px;
+    border-radius: 50%;
+    display:flex; align-items:center; justify-content:center;
+    font-weight: 900;
+    font-size: 0.95rem;
+    box-shadow: 0 6px 14px rgba(0,0,0,0.3);
+  }
+  .card h3{
+    font-family:'Aref Ruqaa', serif;
+    font-size: 1.5rem;
+    margin-top: 0.4rem;
+  }
+  .rating-row{
+    display:flex;
+    align-items:center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    color: #6b5f3f;
+  }
+  .stars{ color: var(--gold); letter-spacing: 1px; }
+  .addr{
+    font-size: 0.9rem;
+    color: #4a4536;
+    line-height: 1.7;
+  }
+  .note{
+    font-size: 0.88rem;
+    color: #5c5642;
+    background: rgba(0,0,0,0.04);
+    padding: 0.6rem 0.8rem;
+    border-radius: 10px;
+    border-right: 3px solid var(--gold);
+  }
+  .actions{
+    display:flex;
+    gap: 0.6rem;
+    margin-top: 0.4rem;
+    flex-wrap: wrap;
+  }
+  .btn{
+    flex:1;
+    text-align:center;
+    padding: 0.65rem 0.8rem;
+    border-radius: 10px;
+    font-size: 0.88rem;
+    font-weight: 700;
+    text-decoration:none;
+    transition: opacity 0.2s ease;
+  }
+  .btn:hover{ opacity: 0.85; }
+  .btn.map{ background: var(--night); color: var(--sand); }
+  .btn.call{ background: var(--gold); color: var(--night-deep); }
+
+  .hidden{ display:none !important; }
+
+  footer{
+    position:relative; z-index:1;
+    text-align:center;
+    padding: 2.5rem 1.5rem 3.5rem;
+    color: var(--sand-dim);
+    font-size: 0.9rem;
+    line-height: 2;
+  }
+  footer b{ color: var(--gold-bright); }
+
+  @media (max-width: 640px){
+    header{ padding: 4rem 1.2rem 2.5rem; }
+    .stat-row{ gap: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="river-wrap">
+  <svg width="100%" height="100%" viewBox="0 0 100 800" preserveAspectRatio="none" style="position:absolute; top:0; right:0;">
+    <path d="M50,0 C20,100 80,200 50,300 C20,400 80,500 50,600 C20,700 80,750 50,800"
+          fill="none" stroke="#2f6e63" stroke-width="6" opacity="0.5"/>
+    <path d="M50,0 C20,100 80,200 50,300 C20,400 80,500 50,600 C20,700 80,750 50,800"
+          fill="none" stroke="#c9a227" stroke-width="1" opacity="0.3"/>
+  </svg>
+</div>
+
+<header>
+  <div class="eyebrow">دليل الضيافة · محافظة سوهاج</div>
+  <h1>فنادق <span>سوهاج</span><br>على ضفاف النيل</h1>
+  <p class="lede">
+    مجموعة من الفنادق المتاحة في مدينة سوهاج وضواحيها، مع العنوان ورقم التواصل ورابط الموقع على الخريطة،
+    عشان لو حد جاي المدينة ومش عارف ينزل فين، يلاقي كل الخيارات قدامه في مكان واحد.
+  </p>
+  <div class="stat-row">
+    <div class="stat"><b>11</b><span>فندق مُدرج</span></div>
+    <div class="stat"><b>4.0</b><span>متوسط التقييم</span></div>
+    <div class="stat"><b>٢</b><span>فنادق عائمة على النيل</span></div>
+  </div>
+</header>
+
+<div class="controls" id="filters">
+  <button class="chip active" data-filter="all">الكل</button>
+  <button class="chip" data-filter="high">الأعلى تقييمًا (٤+)</button>
+  <button class="chip" data-filter="nile">إطلالة على النيل</button>
+  <button class="chip" data-filter="budget">اقتصادي</button>
+</div>
+
+<main>
+  <div class="river-line"></div>
+  <div class="section-title">داخل مدينة سوهاج</div>
+  <div class="section-sub">كلها قريبة من الكورنيش ومحطة القطر، وسط المدينة</div>
+  <div class="grid" id="cityGrid"></div>
+
+  <div class="section-title">بالقرب من سوهاج</div>
+  <div class="section-sub">في البلينا، على بعد نحو ساعة، وملاصق لمعبد أبيدوس مباشرة</div>
+  <div class="grid" id="nearGrid"></div>
+</main>
+
+<footer>
+  البيانات مبنية على معلومات أماكن عامة (خرائط جوجل) وقد تتغير الأسعار والتوفر — يُفضّل الاتصال والتأكيد قبل الحجز.<br>
+  صُنع بحب لكل حد قاصد <b>سوهاج</b> ومش عارف يريح فين 🌴
+</footer>
+
+<script>
+const hotels = [
+  {
+    name: "Diamond Azur Hotel",
+    rating: 4.2, count: 908,
+    addr: "كورنيش النيل، الكبش، قسم ثان سوهاج",
+    phone: "+201111008874",
+    note: "إطلالة مفتوحة على النيل، فطار بوفيه، وخدمة استقبال متعاونة.",
+    lat: 26.5480568, lng: 31.7027282,
+    tags: ["high","nile"]
+  },
+  {
+    name: "فندق ميريت أمون سوهاج",
+    rating: 4.5, count: 77,
+    addr: "مدخل ستاد سوهاج الرياضي",
+    phone: "+201018411117",
+    note: "موقع مركزي وغرف واسعة نظيفة، من أعلى الفنادق تقييمًا في المدينة.",
+    lat: 26.5593018, lng: 31.7087634,
+    tags: ["high"]
+  },
+  {
+    name: "Grand Hotel Abwaluva",
+    rating: 3.9, count: 1890,
+    addr: "خلف محطة القطار، الكبش، قسم أول سوهاج",
+    phone: "+20932102093",
+    note: "خيار اقتصادي، الفطار متضمن غالبًا، والدخول من الدور الخامس.",
+    lat: 26.5510401, lng: 31.7001298,
+    tags: ["budget"]
+  },
+  {
+    name: "Al Amir Palace Hotel",
+    rating: 3.8, count: 208,
+    addr: "شارع نجع، الكبش، قسم أول",
+    phone: "+201101142451",
+    note: "بديل بسيط وأقل سعرًا، يناسب من يبحث عن مبيت سريع فقط.",
+    lat: 26.5515282, lng: 31.7007521,
+    tags: ["budget"]
+  },
+  {
+    name: "Hotel NIEL Elite",
+    rating: 3.9, count: 1112,
+    addr: "مرسى ناصر السياحي، أمام البنك الأهلي، قسم ثان",
+    phone: "+201155515444",
+    note: "فندق عائم على النيل بمطعم ومسبح، وغرف بإطلالة على المدينة أو النهر.",
+    lat: 26.5650619, lng: 31.7061079,
+    tags: ["nile"]
+  },
+  {
+    name: "NILE STORY HOTEL SOHAG",
+    rating: 4.0, count: 1426,
+    addr: "كورنيش النيل الخولي، قسم أول سوهاج",
+    phone: "+201146317877",
+    note: "فندق عائم آخر بموقع ممتاز وسط المدينة، وسطح بإطلالة نيلية.",
+    lat: 26.5600574, lng: 31.7059646,
+    tags: ["nile"]
+  },
+  {
+    name: "فندق الصفا السياحي سوهاج",
+    rating: 3.5, count: 2426,
+    addr: "الجمهورية، الكبش، قسم ثان سوهاج",
+    phone: "+201203055501",
+    note: "موقع مباشر على كورنيش النيل، وأسعار في متناول اليد.",
+    lat: 26.5612893, lng: 31.6984259,
+    tags: ["budget","nile"]
+  },
+  {
+    name: "VIP HOTEL & COFE",
+    rating: 4.0, count: 2,
+    addr: "الشرق، نادي المحليات، أمام الجامعة، قسم ثان",
+    phone: "+201119090164",
+    note: "فندق صغير وكافيه ملحق به، قريب من الجامعة.",
+    lat: 26.5651266, lng: 31.7085017,
+    tags: ["high"]
+  },
+  {
+    name: "Andalus Hotel",
+    rating: 3.9, count: 359,
+    addr: "شارع المحطة، الكبش، قسم أول سوهاج",
+    phone: "+201272224955",
+    note: "قريب جدًا من محطة القطار، وبه كافيه بالدور الأرضي.",
+    lat: 26.5507266, lng: 31.6990255,
+    tags: ["budget"]
+  },
+  {
+    name: "فندق أغابى",
+    rating: 3.6, count: 85,
+    addr: "شارع المحطة لورشة، الخولي، قسم أول سوهاج",
+    phone: "+20932331777",
+    note: "غرف واسعة وموقع جيد وسط المدينة، بأسعار معقولة.",
+    lat: 26.5518688, lng: 31.6973321,
+    tags: ["budget"]
+  }
+];
+
+const nearby = [
+  {
+    name: "House of Life Abydos Hotel",
+    rating: 4.3, count: 542,
+    addr: "البلينا، محافظة سوهاج — على بعد أمتار من معبد أبيدوس",
+    phone: "+201010008912",
+    note: "أقرب فندق لمعبد أبيدوس مباشرة، بديكور مستوحى من الطراز الفرعوني ومسبح وحديقة.",
+    lat: 26.1885874, lng: 31.9229996,
+    tags: ["high","nile"]
+  }
+];
+
+function stars(r){
+  const full = Math.round(r);
+  return "★".repeat(full) + "☆".repeat(5-full);
+}
+
+function mapUrl(h){
+  return `https://www.google.com/maps/search/?api=1&query=${h.lat},${h.lng}`;
+}
+
+function card(h, idx){
+  return `
+  <div class="card" data-tags="${h.tags.join(',')}" data-idx="${idx}">
+    <h3>${h.name}</h3>
+    <div class="rating-row">
+      <span class="stars">${stars(h.rating)}</span>
+      <span>${h.rating} (${h.count.toLocaleString('ar-EG')} تقييم)</span>
+    </div>
+    <div class="addr">📍 ${h.addr}</div>
+    <div class="note">${h.note}</div>
+    <div class="actions">
+      <a class="btn map" href="${mapUrl(h)}" target="_blank" rel="noopener">عرض على الخريطة</a>
+      <a class="btn call" href="tel:${h.phone}">اتصال</a>
+    </div>
+  </div>`;
+}
+
+const cityGrid = document.getElementById('cityGrid');
+const nearGrid = document.getElementById('nearGrid');
+cityGrid.innerHTML = hotels.map((h,i)=>card(h,i+1)).join('');
+nearGrid.innerHTML = nearby.map((h,i)=>card(h,hotels.length+i+1)).join('');
+
+document.querySelectorAll('.chip').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.chip').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const f = btn.dataset.filter;
+    document.querySelectorAll('.card').forEach(card=>{
+      if(f === 'all'){ card.classList.remove('hidden'); return; }
+      const tags = card.dataset.tags.split(',');
+      card.classList.toggle('hidden', !tags.includes(f));
+    });
+  });
+});
+</script>
+<footer class="footer">
+    <h3>Eng/ Youssef </h3>
+    <p>Web Developer</p>
+    <p>© 2026 All Rights Reserved</p>
+</footer>
+
+</body>
+</html>
